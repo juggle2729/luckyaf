@@ -10,7 +10,7 @@
         <div class="nav-center">
           <a class="nav-item hero-brand" href="/">
             <img src="~assets/logo.svg" :alt="pkginfo.description">
-            <tooltip :label="'v' + pkginfo.version" placement="right" type="success" size="small" :no-animate="true" :always="true" :rounded="true">
+            <tooltip :label="pkginfo.version" placement="right" type="success" size="small" :no-animate="true" :always="true" :rounded="true">
               <div class="is-hidden-mobile">
                 <span class="vue">测试环境</span><strong class="admin">一元购控制台</strong>
               </div>

@@ -12,8 +12,8 @@ import tables from './tables'
 const state = {
   items: [
     {
-      name: 'Dashboard',
-      path: '/dashboard',
+      name: 'Dashboard Demo',
+      path: '/dashboard-demo',
       meta: {
         icon: 'fa-tachometer'
       },
