@@ -1,15 +1,21 @@
 import Vue from 'vue'
 import Resource from 'vue-resource'
 import NProgress from 'vue-nprogress'
-import { sync } from 'vuex-router-sync'
+import {sync} from 'vuex-router-sync'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import * as filters from './filters'
-import { TOGGLE_SIDEBAR } from 'vuex-store/mutation-types'
+import {TOGGLE_SIDEBAR} from 'vuex-store/mutation-types'
 
 Vue.use(Resource)
-Vue.use(NProgress)
+const options = {
+  latencyThreshold: 200, // Number of ms before progressbar starts showing, default: 100,
+  router: true, // Show progressbar when navigating routes, default: true
+  // TODO: bug here, when progressbar turn on http, cause one error, see https://github.com/rstacruz/nprogress/pull/129
+  http: false // Show progressbar when doing Vue.http, default: true
+}
+Vue.use(NProgress, options)
 
 sync(store, router)
 

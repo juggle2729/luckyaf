@@ -3,9 +3,9 @@ import Vuex from 'vuex'
 import pkg from 'package'
 import * as actions from './actions'
 import * as getters from './getters'
-
 import app from './modules/app'
 import menu from './modules/menu'
+import auth from './modules/auth'
 
 Vue.use(Vuex)
 
@@ -15,7 +15,8 @@ const store = new Vuex.Store({
   getters,
   modules: {
     app,
-    menu
+    menu,
+    auth
   },
   state: {
     pkg
