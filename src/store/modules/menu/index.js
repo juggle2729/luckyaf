@@ -1,9 +1,14 @@
 import * as types from '../../mutation-types'
-import { lazyLoading } from './lazyLoading'
+import {lazyLoading} from './lazyLoading'
 import charts from './charts'
 import uifeatures from './uifeatures'
 import components from './components'
 import tables from './tables'
+import dataConfig from './data-config'
+import product from './product'
+import award from './award'
+import user from './user'
+import analysis from './analysis'
 
 // show: meta.label -> name
 // name: component name
@@ -12,13 +17,42 @@ import tables from './tables'
 const state = {
   items: [
     {
-      name: 'Dashboard Demo',
-      path: '/dashboard-demo',
+      name: 'Dashboard',
+      path: '/dashboard',
       meta: {
         icon: 'fa-tachometer'
       },
-      component: lazyLoading('dashboard', true)
+      component: lazyLoading('Home', false)
     },
+    dataConfig,
+    product,
+    award,
+    user,
+    {
+      name: '系统通知',
+      path: '/notification',
+      meta: {
+        icon: 'fa-tachometer'
+      },
+      component: lazyLoading('Home', false)
+    },
+    {
+      name: '用户反馈',
+      path: '/feedback',
+      meta: {
+        icon: 'fa-tachometer'
+      },
+      component: lazyLoading('Home', false)
+    },
+    {
+      name: '红包模版',
+      path: '/coupon',
+      meta: {
+        icon: 'fa-tachometer'
+      },
+      component: lazyLoading('Home', false)
+    },
+    analysis,
     charts,
     uifeatures,
     components,
