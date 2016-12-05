@@ -1,0 +1,134 @@
+<template>
+  <div>
+    <div class="tile is-ancestor is-vertical">
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <button class="button is-primary is-pulled-right">+ add banner</button>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <h4 class="title">Table</h4>
+          <table class="table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>名称</th>
+              <th>图像</th>
+              <th>生效时间</th>
+              <th>结束时间</th>
+              <th>命令</th>
+              <th>更新时间</th>
+            </tr>
+            </thead>
+            <paginate name="banners" :list="banners" tag="tbody">
+              <tr v-for="banner in paginated('banners')">
+                <td>{{ banner.id }}</td>
+                <td>{{ banner.id }}</td>
+                <td>{{ banner.id }}</td>
+                <td>{{ banner.id }}</td>
+                <td>{{ banner.id }}</td>
+                <td>{{ banner.id }}</td>
+                <td>{{ banner.id }}</td>
+              </tr>
+            </paginate>
+          </table>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child box">
+          <paginate-links for="banners" :limit="5"></paginate-links>
+          <paginate-links for="banners" :simple="{next: 'Next »', prev: '« Back'}"></paginate-links>
+        </article>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<script>
+  export default {
+    beforeMount () {
+      this.$store.dispatch('getBanners',
+        {'X-AUTH-USER': this.$store.state.auth.user_id.toString(), 'X-AUTH-TOKEN': this.$store.state.auth.token},
+        {page: 1, size: 15, orderby: 'updated_at'})
+    },
+    data () {
+      return {
+        banners: [
+          {id: 1},
+          {id: 2},
+          {id: 3},
+          {id: 4},
+          {id: 5},
+          {id: 6},
+          {id: 7}
+        ],
+        paginate: ['banners']
+      }
+    }
+
+  }
+</script>
+
+<style lang="scss">
+  .table-responsive {
+    display: block;
+    width: 100%;
+    min-height: .01%;
+    overflow-x: auto;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  .paginate-list {
+    width: 159px;
+    margin: 0 auto;
+    text-align: left;
+
+  li {
+    display: block;
+
+  &
+  :before {
+    content: '⚬ ';
+    font-weight: bold;
+    color: slategray;
+  }
+
+  }
+  }
+
+  .paginate-links.banners {
+    user-select: none;
+
+  a {
+    cursor: pointer;
+  }
+
+  li.active a {
+    font-weight: bold;
+  }
+
+  li.next:before {
+    content: ' | ';
+    margin-right: 13px;
+    color: #ddd;
+  }
+
+  li.disabled a {
+    color: #ccc;
+    cursor: no-drop;
+  }
+
+  }
+
+</style>

@@ -7,8 +7,13 @@ import router from './router'
 import store from './store'
 import * as filters from './filters'
 import {TOGGLE_SIDEBAR} from 'vuex-store/mutation-types'
+import VuePaginate from 'vue-paginate'
+
+Vue.use(VuePaginate)
 
 Vue.use(Resource)
+Vue.http.options.root = 'http://121.40.29.144/admin'
+
 const options = {
   latencyThreshold: 200, // Number of ms before progressbar starts showing, default: 100,
   router: true, // Show progressbar when navigating routes, default: true

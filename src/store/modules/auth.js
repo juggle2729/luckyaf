@@ -27,7 +27,6 @@ const mutations = {
     state.requestStatus = 'started'
   },
   [types.AUTHENTICATE_SUCCESS] (state, data) {
-    console.log(data.id, data.token)
     state.user_id = data.id
     state.token = data.token
     state.loginStatus = 'successful'

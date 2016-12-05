@@ -6,6 +6,7 @@ import * as getters from './getters'
 import app from './modules/app'
 import menu from './modules/menu'
 import auth from './modules/auth'
+import dataConfig from './modules/data-config'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
   modules: {
     app,
     menu,
-    auth
+    auth,
+    dataConfig
   },
   state: {
     pkg
