@@ -59,7 +59,6 @@
       Chart
     },
     beforeMount () {
-      this.$store.dispatch('login', {email: 'lichang@adsquare-tech.com', password: '123456'})
     },
     data () {
       return Object.assign(this.$store.state.pkg, {

@@ -47,11 +47,10 @@
 </template>
 
 <script>
+  import {getAuthHeaders} from '../../router'
   export default {
     beforeMount () {
-      this.$store.dispatch('getBanners',
-        {'X-AUTH-USER': this.$store.state.auth.user_id.toString(), 'X-AUTH-TOKEN': this.$store.state.auth.token},
-        {page: 1, size: 15, orderby: 'updated_at'})
+      this.$store.dispatch('getBanners', getAuthHeaders(), {page: 1, size: 15, orderby: 'updated_at'})
     },
     data () {
       return {

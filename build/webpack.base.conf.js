@@ -9,6 +9,12 @@ const projectRoot = path.resolve(__dirname, '../')
 const isProduction = process.env.NODE_ENV === 'production'
 
 module.exports = {
+  eslint: {
+    configFile: '.eslintrc.js'
+  }
+}
+
+module.exports = {
   entry: {
     app: './src/index.js',
     vendor: ['vue', 'vue-router', 'vuex']
