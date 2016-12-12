@@ -4,7 +4,7 @@ import dataConfig from '../../api/data-config'
 // initial state
 const state = {
   banners: {
-    list: null,
+    list: [],
     total: null,
     page: null,
     size: null,

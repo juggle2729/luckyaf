@@ -8,7 +8,6 @@
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <h4 class="title">Table</h4>
           <table class="table">
             <thead>
             <tr>
@@ -21,15 +20,15 @@
               <th>更新时间</th>
             </tr>
             </thead>
-            <paginate name="banners" :list="banners" tag="tbody">
+            <paginate name="banners" :list="banners" :per="10" tag="tbody">
               <tr v-for="banner in paginated('banners')">
                 <td>{{ banner.id }}</td>
-                <td>{{ banner.id }}</td>
-                <td>{{ banner.id }}</td>
-                <td>{{ banner.id }}</td>
-                <td>{{ banner.id }}</td>
-                <td>{{ banner.id }}</td>
-                <td>{{ banner.id }}</td>
+                <td>{{ banner.title }}</td>
+                <td><img :src="banner.image" alt="Banner image" height="42" width="42"></td>
+                <td>{{ banner.start_str }}</td>
+                <td>{{ banner.end_str }}</td>
+                <td>{{ banner.cmd }}</td>
+                <td>{{ banner.updated_at }}</td>
               </tr>
             </paginate>
           </table>
@@ -37,7 +36,7 @@
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <paginate-links for="banners" :limit="5"></paginate-links>
+          <paginate-links for="banners" :limit="10"></paginate-links>
           <paginate-links for="banners" :simple="{next: 'Next »', prev: '« Back'}"></paginate-links>
         </article>
       </div>
@@ -47,6 +46,7 @@
 </template>
 
 <script>
+  import moment from 'moment'
   import {getAuthHeaders} from '../../router'
   export default {
     beforeMount () {
@@ -54,19 +54,19 @@
     },
     data () {
       return {
-        banners: [
-          {id: 1},
-          {id: 2},
-          {id: 3},
-          {id: 4},
-          {id: 5},
-          {id: 6},
-          {id: 7}
-        ],
         paginate: ['banners']
       }
+    },
+    computed: {
+      banners () {
+        var banners = this.$store.state.dataConfig.banners.list
+        banners.forEach(function (item) {
+          item.start_str = moment.unix(item.start_ts).format('YYYY-MM-DD h:mm:ss')
+          item.end_str = moment.unix(item.end_ts).format('YYYY-MM-DD h:mm:ss')
+        })
+        return banners
+      }
     }
-
   }
 </script>
 
