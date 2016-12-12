@@ -51,6 +51,11 @@ export default new Router({
       path: '/login',
       component: require('../views/Login')
     },
+    {
+      name: 'Banner Details',
+      path: '/data_config/banner/:id',
+      component: require('../views/data_config/bannerDetails')
+    },
     ...generateRoutesFromMenu(menuModule.state.items),
     {
       path: '*',

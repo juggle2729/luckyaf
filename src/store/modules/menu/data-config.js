@@ -1,5 +1,4 @@
 import {lazyLoading} from './lazyLoading'
-import banner from '../../../views/data_config/banner.vue'
 
 export default {
   meta: {
@@ -17,7 +16,7 @@ export default {
     {
       name: 'Banner',
       path: '/data_config/banner',
-      component: banner
+      component: lazyLoading('data_config/banner')
     },
     {
       name: 'Discovery',

@@ -22,7 +22,7 @@
             </thead>
             <paginate name="banners" :list="banners" :per="10" tag="tbody">
               <tr v-for="banner in paginated('banners')">
-                <td>{{ banner.id }}</td>
+                <td><router-link :to="{ name: 'Banner Details', params: { id: banner.id }}">{{ banner.id }}</router-link></td>
                 <td>{{ banner.title }}</td>
                 <td><img :src="banner.image" alt="Banner image" height="42" width="42"></td>
                 <td>{{ banner.start_str }}</td>
