@@ -54,12 +54,18 @@ export default new Router({
     {
       name: 'Banner Details',
       path: '/data_config/banner/:id',
-      component: require('../views/data_config/bannerDetails')
+      component: require('../views/data_config/bannerDetails'),
+      beforeEnter: requireAuth
     },
     ...generateRoutesFromMenu(menuModule.state.items),
     {
+      name: '404',
+      path: '/404',
+      component: require('../views/Login')
+    },
+    {
       path: '*',
-      redirect: '/'
+      redirect: '/404'
     }
   ]
 })

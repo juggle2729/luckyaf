@@ -15,8 +15,8 @@ export default {
     },
     {
       name: 'Banner',
-      path: '/data_config/banner',
-      component: lazyLoading('data_config/banner')
+      path: '/data_config/banners',
+      component: lazyLoading('data_config/bannerList')
     },
     {
       name: 'Discovery',

@@ -20,9 +20,11 @@
               <th>更新时间</th>
             </tr>
             </thead>
-            <paginate name="banners" :list="banners" :per="10" tag="tbody">
-              <tr v-for="banner in paginated('banners')">
-                <td><router-link :to="{ name: 'Banner Details', params: { id: banner.id }}">{{ banner.id }}</router-link></td>
+            <paginate name="bannerList" :list="bannerList" :per="10" tag="tbody">
+              <tr v-for="banner in paginated('bannerList')">
+                <td>
+                  <router-link :to="{ name: 'Banner Details', params: { id: banner.id }}">{{ banner.id }}</router-link>
+                </td>
                 <td>{{ banner.title }}</td>
                 <td><img :src="banner.image" alt="Banner image" height="42" width="42"></td>
                 <td>{{ banner.start_str }}</td>
@@ -36,8 +38,8 @@
       </div>
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <paginate-links for="banners" :limit="10"></paginate-links>
-          <paginate-links for="banners" :simple="{next: 'Next »', prev: '« Back'}"></paginate-links>
+          <paginate-links for="bannerList" :limit="10"></paginate-links>
+          <paginate-links for="bannerList" :simple="{next: 'Next »', prev: '« Back'}"></paginate-links>
         </article>
       </div>
     </div>
@@ -50,21 +52,24 @@
   import {getAuthHeaders} from '../../router'
   export default {
     beforeMount () {
-      this.$store.dispatch('getBanners', getAuthHeaders(), {page: 1, size: 15, orderby: 'updated_at'})
+      this.$store.dispatch('getBannerList', {
+        authHeaders: getAuthHeaders(),
+        payload: {page: 1, size: 15, orderby: 'updated_at'}
+      })
     },
     data () {
       return {
-        paginate: ['banners']
+        paginate: ['bannerList']
       }
     },
     computed: {
-      banners () {
-        var banners = this.$store.state.dataConfig.banners.list
-        banners.forEach(function (item) {
+      bannerList () {
+        var bannerList = this.$store.state.dataConfig.bannerList.list
+        bannerList.forEach(function (item) {
           item.start_str = moment.unix(item.start_ts).format('YYYY-MM-DD h:mm:ss')
           item.end_str = moment.unix(item.end_ts).format('YYYY-MM-DD h:mm:ss')
         })
-        return banners
+        return bannerList
       }
     }
   }
@@ -106,7 +111,7 @@
   }
   }
 
-  .paginate-links.banners {
+  .paginate-links.bannerList {
     user-select: none;
 
   a {
