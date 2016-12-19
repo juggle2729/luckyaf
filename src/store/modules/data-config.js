@@ -1,6 +1,6 @@
 import * as types from '../mutation-types'
 import dataConfig from '../../api/data-config'
-import moment from 'moment'
+import {QINIU_IMAGE_DOMAIN} from '../../const'
 
 // initial state
 const state = {
@@ -17,10 +17,15 @@ const state = {
     image: null,
     title: null,
     command: null,
-    start: null,
-    end: null,
+    start: 1000000000,
+    end: 1000000000,
     error: null,
     requestStatus: null
+  },
+  qiniu: {
+    requestStatus: null,
+    data: null,
+    error: null
   }
 }
 
@@ -39,6 +44,27 @@ const actions = {
       (data) => commit(types.GET_BANNER_DETAILS_SUCCESS, data),
       (error) => commit(types.GET_BANNER_DETAILS_FAILURE, error)
     )
+  },
+  uploadToQiniu ({commit}, params) {
+    commit(types.UPLOAD_IMAGE_REQUEST)
+    dataConfig.uploadToQiniuAPI(params.formData,
+      (data) => commit(types.UPLOAD_IMAGE_SUCCESS, data),
+      (error) => commit(types.UPLOAD_IMAGE_FAILURE, error)
+    )
+  },
+  updateBannerDetails ({commit}, params) {
+    return new Promise((resolve, reject) => {
+      commit(types.UPDATE_BANNER_DETAILS_REQUEST)
+      dataConfig.updateBannerDetailsAPI(params.authHeaders, params.bannerID, params.data,
+        (data) => {
+          commit(types.UPDATE_BANNER_DETAILS_SUCCESS, data)
+          resolve()
+        },
+        (error) => {
+          commit(types.UPDATE_BANNER_DETAILS_FAILURE, error)
+          reject(error)
+        })
+    })
   }
 }
 
@@ -66,8 +92,8 @@ const mutations = {
     state.bannerDetails.image = data.image
     state.bannerDetails.title = data.title
     state.bannerDetails.command = data.cmd
-    state.bannerDetails.start = moment.unix(data.start_ts)
-    state.bannerDetails.end = moment.unix(data.end_ts)
+    state.bannerDetails.start = data.start_ts
+    state.bannerDetails.end = data.end_ts
     state.bannerList.requestStatus = 'stopped'
   },
   [types.GET_BANNER_DETAILS_FAILURE] (state, error) {
@@ -85,6 +111,25 @@ const mutations = {
   },
   [types.updateBannerCommand] (state, value) {
     state.bannerDetails.command = value
+  },
+  [types.UPLOAD_IMAGE_REQUEST] (state) {
+    state.qiniu.requestStatus = 'started'
+  },
+  [types.UPLOAD_IMAGE_SUCCESS] (state, value) {
+    state.qiniu.requestStatus = 'stopped'
+    state.qiniu.data = value
+    state.bannerDetails.image = QINIU_IMAGE_DOMAIN + value.key
+  },
+  [types.UPLOAD_IMAGE_FAILURE] (state, error) {
+    state.qiniu.requestStatus = 'stopped'
+    state.qiniu.error = error
+  },
+  [types.UPDATE_BANNER_DETAILS_REQUEST] (state) {
+    state.bannerDetails.requestStatus = 'started'
+  },
+  [types.UPDATE_BANNER_DETAILS_SUCCESS] (state, value) {
+  },
+  [types.UPDATE_BANNER_DETAILS_FAILURE] (state, error) {
   }
 }
 

@@ -21,7 +21,15 @@
               <label class="label"></label>
             </div>
             <div class="control">
-              <button class="button is-primary is-outlined ">更改图片</button>
+              <form ref="imageForm" class="control" method="post" action="http://upload.qiniu.com/"
+                    enctype="multipart/form-data">
+                <input name="key" type="hidden" value="<resource_key>">
+                <input name="x:<custom_name>" type="hidden" value="<custom_value>">
+                <input name="token" type="hidden" value="<upload_token>">
+                <input ref="imageInput" id="image-upload" name="file" type="file" class="input-file"
+                       @change="imageChanged"/>
+                <label for="image-upload" class="button is-primary is-outlined ">更改图片</label>
+              </form>
             </div>
           </div>
           <div class="control is-horizontal">
@@ -69,8 +77,8 @@
               <label class="label"></label>
             </div>
             <div class="control">
-              <button class="button is-primary">Submit</button>
-              <button class="button is-link">Cancel</button>
+              <button class="button is-primary" @click="submitClicked">Submit</button>
+              <button class="button is-link" @click="cancelClicked">Cancel</button>
             </div>
           </div>
         </div>
@@ -80,12 +88,33 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import Flatpickr from 'vue-flatpickr/vue-flatpickr-default.vue'
+  import Notification from 'vue-bulma-notification'
   import {getAuthHeaders} from '../../router'
+  import uuid from 'uuid'
+  import moment from 'moment'
+
+  const NotificationComponent = Vue.extend(Notification)
+
+  const openNotification = (propsData = {
+    title: '',
+    message: '',
+    type: '',
+    direction: '',
+    duration: 4500,
+    container: '.notifications'
+  }) => {
+    return new NotificationComponent({
+      el: document.createElement('div'),
+      propsData
+    })
+  }
 
   export default {
     components: {
-      Flatpickr
+      Flatpickr,
+      Notification
     },
     beforeMount () {
       this.$store.dispatch('getBannerDetails', {authHeaders: getAuthHeaders(), bannerID: this.$route.params.id})
@@ -96,18 +125,57 @@
       return {
         options: {
           allowInput: true,
-          enableTime: true,
-          dateFormat: 'Y-m-d h:i K',
-          defaultDate: this.$store.state.dataConfig.bannerDetails.start
+          dateFormat: 'Y-m-d H:i:S',
+          enableTime: true
         }
       }
     },
     methods: {
       updateStart (value) {
-        this.$store.commit('updateBannerStart', value)
+        var ts = moment(value, 'YYYY-MM-DD HH:mm:ss').unix()
+        console.log(ts)
+        this.$store.commit('updateBannerStart', ts)
       },
       updateEnd (value) {
-        this.$store.commit('updateBannerEnd', value)
+        this.$store.commit('updateBannerEnd', moment(value).unix())
+      },
+      imageChanged () {
+        var file = this.$refs.imageInput.files[0]
+        var formData = new FormData()
+        formData.append('file', file)
+        formData.append('key', uuid.v4() + '-' + file.name)
+        // Don't console.log(formData), cause it will be empty, WTF
+        // http://stackoverflow.com/questions/7752188/formdata-appendkey-value-is-not-working
+        this.$store.dispatch('uploadToQiniu', {formData: formData})
+      },
+      submitClicked () {
+        var data = {
+          image: this.$store.state.dataConfig.bannerDetails.image,
+          cmd: this.$store.state.dataConfig.bannerDetails.command,
+          title: this.$store.state.dataConfig.bannerDetails.title,
+          start_ts: this.$store.state.dataConfig.bannerDetails.start,
+          end_ts: this.$store.state.dataConfig.bannerDetails.end
+        }
+        this.$store.dispatch('updateBannerDetails',
+          {authHeaders: getAuthHeaders(), bannerID: this.$route.params.id, data: data}).then(
+          () => {
+            this.openNotificationWithType('success', '成功', '修改成功')
+            this.$router.back()
+          },
+          (error) => {
+            this.openNotificationWithType('danger', '失败', error.toString())
+          }
+        )
+      },
+      cancelClicked () {
+        this.$router.back()
+      },
+      openNotificationWithType (type, title, message) {
+        openNotification({
+          title: title,
+          message: message,
+          type: type
+        })
       }
     },
     computed: {
@@ -134,14 +202,28 @@
       },
       start: {
         get () {
-          return this.$store.state.dataConfig.bannerDetails.start
+          return moment.unix(this.$store.state.dataConfig.bannerDetails.start).toString()
         }
       },
       end: {
         get () {
-          return this.$store.state.dataConfig.bannerDetails.end
+          return moment.unix(this.$store.state.dataConfig.bannerDetails.end).clone().toDate()
         }
       }
     }
   }
 </script>
+
+<style lang="css">
+  /*
+    trick from https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
+   */
+  .input-file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+</style>

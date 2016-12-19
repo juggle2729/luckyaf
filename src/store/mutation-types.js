@@ -20,3 +20,11 @@ export const updateBannerTitle = 'updateBannerTitle'
 export const updateBannerCommand = 'updateBannerCommand'
 export const updateBannerStart = 'updateBannerStart'
 export const updateBannerEnd = 'updateBannerEnd'
+
+export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST'
+export const UPLOAD_IMAGE_SUCCESS = 'UPLOAD_IMAGE_SUCCESS'
+export const UPLOAD_IMAGE_FAILURE = 'UPLOAD_IMAGE_FAILURE'
+
+export const UPDATE_BANNER_DETAILS_REQUEST = 'UPDATE_BANNER_DETAILS_REQUEST'
+export const UPDATE_BANNER_DETAILS_SUCCESS = 'UPDATE_BANNER_DETAILS_SUCCESS'
+export const UPDATE_BANNER_DETAILS_FAILURE = 'UPDATE_BANNER_DETAILS_FAILURE'
