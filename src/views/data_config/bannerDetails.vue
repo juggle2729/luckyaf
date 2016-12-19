@@ -21,15 +21,9 @@
               <label class="label"></label>
             </div>
             <div class="control">
-              <form ref="imageForm" class="control" method="post" action="http://upload.qiniu.com/"
-                    enctype="multipart/form-data">
-                <input name="key" type="hidden" value="<resource_key>">
-                <input name="x:<custom_name>" type="hidden" value="<custom_value>">
-                <input name="token" type="hidden" value="<upload_token>">
-                <input ref="imageInput" id="image-upload" name="file" type="file" class="input-file"
-                       @change="imageChanged"/>
-                <label for="image-upload" class="button is-primary is-outlined ">更改图片</label>
-              </form>
+              <input ref="imageInput" id="image-upload" name="file" type="file" class="input-file"
+                     @change="imageChanged"/>
+              <label for="image-upload" class="button is-primary is-outlined ">更改图片</label>
             </div>
           </div>
           <div class="control is-horizontal">
@@ -94,6 +88,7 @@
   import {getAuthHeaders} from '../../router'
   import uuid from 'uuid'
   import moment from 'moment'
+  import dataConfig from '../../api/data-config'
 
   const NotificationComponent = Vue.extend(Notification)
 
@@ -134,10 +129,10 @@
       updateStart (value) {
         var ts = moment(value, 'YYYY-MM-DD HH:mm:ss').unix()
         console.log(ts)
-        this.$store.commit('updateBannerStart', ts)
+        this.$store.commit('updateBannerDetailsStart', ts)
       },
       updateEnd (value) {
-        this.$store.commit('updateBannerEnd', moment(value).unix())
+        this.$store.commit('updateBannerDetailsEnd', moment(value).unix())
       },
       imageChanged () {
         var file = this.$refs.imageInput.files[0]
@@ -146,7 +141,11 @@
         formData.append('key', uuid.v4() + '-' + file.name)
         // Don't console.log(formData), cause it will be empty, WTF
         // http://stackoverflow.com/questions/7752188/formdata-appendkey-value-is-not-working
-        this.$store.dispatch('uploadToQiniu', {formData: formData})
+        this.$store.dispatch('uploadToQiniu', {
+          authHeaders: getAuthHeaders(),
+          formData: formData,
+          usage: 'bannerDetails'
+        })
       },
       submitClicked () {
         var data = {
@@ -156,16 +155,12 @@
           start_ts: this.$store.state.dataConfig.bannerDetails.start,
           end_ts: this.$store.state.dataConfig.bannerDetails.end
         }
-        this.$store.dispatch('updateBannerDetails',
-          {authHeaders: getAuthHeaders(), bannerID: this.$route.params.id, data: data}).then(
-          () => {
-            this.openNotificationWithType('success', '成功', '修改成功')
-            this.$router.back()
-          },
-          (error) => {
-            this.openNotificationWithType('danger', '失败', error.toString())
-          }
-        )
+        dataConfig.updateBannerDetailsAPI(getAuthHeaders(), this.$route.params.id, data, () => {
+          this.openNotificationWithType('success', '成功', '修改成功')
+          this.$router.back()
+        }, (error) => {
+          this.openNotificationWithType('danger', '失败', error.toString())
+        })
       },
       cancelClicked () {
         this.$router.back()
@@ -189,7 +184,7 @@
           return this.$store.state.dataConfig.bannerDetails.title
         },
         set (value) {
-          this.$store.commit('updateBannerTitle', value)
+          this.$store.commit('updateBannerDetailsTitle', value)
         }
       },
       command: {
@@ -197,7 +192,7 @@
           return this.$store.state.dataConfig.bannerDetails.command
         },
         set (value) {
-          this.$store.commit('updateBannerCommand', value)
+          this.$store.commit('updateBannerDetailsCommand', value)
         }
       },
       start: {

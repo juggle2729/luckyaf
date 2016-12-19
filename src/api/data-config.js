@@ -22,7 +22,9 @@ export default {
         errorCb(error)
       })
   },
-  uploadToQiniuAPI (formData, cb, errorCb) {
+  uploadToQiniuAPI (authHeaders, formData, cb, errorCb) {
+    Vue.http.headers.common['X-AUTH-USER'] = authHeaders['X-AUTH-USER']
+    Vue.http.headers.common['X-AUTH-TOKEN'] = authHeaders['X-AUTH-TOKEN']
     Vue.http.get('uptoken/')
       .then((response) => {
         var token = response.data.uptoken
@@ -41,6 +43,16 @@ export default {
     Vue.http.headers.common['X-AUTH-USER'] = authHeaders['X-AUTH-USER']
     Vue.http.headers.common['X-AUTH-TOKEN'] = authHeaders['X-AUTH-TOKEN']
     return Vue.http.put('preset/banner/' + bannerID, data)
+      .then((response) => {
+        cb(response.data.data)
+      }, (error) => {
+        errorCb(error)
+      })
+  },
+  createNewBannerAPI (authHeaders, data, cb, errorCb) {
+    Vue.http.headers.common['X-AUTH-USER'] = authHeaders['X-AUTH-USER']
+    Vue.http.headers.common['X-AUTH-TOKEN'] = authHeaders['X-AUTH-TOKEN']
+    return Vue.http.post('preset/banner/', data)
       .then((response) => {
         cb(response.data.data)
       }, (error) => {

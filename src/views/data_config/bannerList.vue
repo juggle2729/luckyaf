@@ -3,7 +3,7 @@
     <div class="tile is-ancestor is-vertical">
       <div class="tile is-parent">
         <article class="tile is-child box">
-          <button class="button is-primary is-pulled-right">+ add banner</button>
+          <button class="button is-primary is-pulled-right" @click="addButtonClicked">+ add banner</button>
         </article>
       </div>
       <div class="tile is-parent">
@@ -60,6 +60,11 @@
     data () {
       return {
         paginate: ['bannerList']
+      }
+    },
+    methods: {
+      addButtonClicked () {
+        this.$router.push({path: '/data_config/banner/new'})
       }
     },
     computed: {
