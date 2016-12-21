@@ -1,5 +1,14 @@
 <template>
-  <div class="tile is-ancestor">
+  <div class="tile is-ancestor is-vertical">
+    <card-modal :visible="isDeleteModalVisible"
+                :title="deleteMessage"
+                transition="zoom"
+                :okText="'确定'"
+                :cancelText="'取消'"
+                v-on:ok="deleteConfirm"
+                v-on:cancel="deleteCancel"
+                v-on:close="deleteModalClose">
+    </card-modal>
     <div class="tile is-parent">
       <article class="tile is-child box">
         <h1 class="title">编辑 Banner 详情</h1>
@@ -71,10 +80,17 @@
               <label class="label"></label>
             </div>
             <div class="control">
-              <button class="button is-primary" @click="submitClicked">Submit</button>
-              <button class="button is-link" @click="cancelClicked">Cancel</button>
+              <button class="button is-primary" @click="submitClicked">保存</button>
+              <button class="button is-link" @click="cancelClicked">取消</button>
             </div>
           </div>
+        </div>
+      </article>
+    </div>
+    <div class="tile is-parent">
+      <article class="tile is-child box">
+        <div class="control">
+          <button class="button is-danger is-pulled-right" @click="deleteClicked">删除</button>
         </div>
       </article>
     </div>
@@ -83,11 +99,12 @@
 
 <script>
   import Vue from 'vue'
-  import Flatpickr from 'vue-flatpickr/vue-flatpickr-default.vue'
-  import Notification from 'vue-bulma-notification'
-  import {getAuthHeaders} from '../../router'
   import uuid from 'uuid'
   import moment from 'moment'
+  import Flatpickr from 'vue-flatpickr/vue-flatpickr-default.vue'
+  import Notification from 'vue-bulma-notification'
+  import {CardModal} from 'vue-bulma-modal'
+  import {getAuthHeaders} from '../../router'
   import dataConfig from '../../api/data-config'
 
   const NotificationComponent = Vue.extend(Notification)
@@ -109,7 +126,8 @@
   export default {
     components: {
       Flatpickr,
-      Notification
+      Notification,
+      CardModal
     },
     beforeMount () {
       this.$store.dispatch('getBannerDetails', {authHeaders: getAuthHeaders(), bannerID: this.$route.params.id})
@@ -122,7 +140,9 @@
           allowInput: true,
           dateFormat: 'Y-m-d H:i:S',
           enableTime: true
-        }
+        },
+        deleteMessage: '确定要删除吗',
+        isDeleteModalVisible: false
       }
     },
     methods: {
@@ -165,12 +185,26 @@
       cancelClicked () {
         this.$router.back()
       },
+      deleteClicked () {
+        this.isDeleteModalVisible = true
+      },
       openNotificationWithType (type, title, message) {
         openNotification({
           title: title,
           message: message,
           type: type
         })
+      },
+      deleteModalClose () {
+        this.isDeleteModalVisible = false
+      },
+      deleteConfirm () {
+        this.isDeleteModalVisible = false
+        console.log('delete it')
+      },
+      deleteCancel () {
+        this.isDeleteModalVisible = false
+        console.log('cancel')
       }
     },
     computed: {

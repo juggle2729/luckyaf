@@ -43,7 +43,7 @@
     "vue-bulma-expanding": "github:vue-bulma/expanding",
     "vue-bulma-jump": "github:vue-bulma/jump",
     "vue-bulma-message": "1.1.0",
-    "vue-bulma-modal": "github:vue-bulma/modal",
+    "vue-bulma-modal": "github:hgs1/modal",
     "vue-bulma-notification": "1.1.0",
     "vue-bulma-progress-bar": "github:vue-bulma/progress-bar",
     "vue-bulma-progress-tracker": "0.0.4",
