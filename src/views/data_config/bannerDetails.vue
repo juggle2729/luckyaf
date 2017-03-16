@@ -18,11 +18,7 @@
               <label class="label">图片</label>
             </div>
             <div class="control is-grouped is-vertical">
-              <p class="control">
-                <img :src="image">
-              </p>
-              <p class="control">
-              </p>
+              <img :src="image">
             </div>
           </div>
           <div class="control is-horizontal">
@@ -60,19 +56,17 @@
               <label class="label">生效时间</label>
             </div>
             <div class="control">
-              <p class="control is-grouped">
-                <Flatpickr class="input" :options="options" v-model="start" @update="updateStart"/>
-              </p>
+              <datepicker :config="{ enableTime: true, time_24hr: true, dateFormat: 'Y-m-d H:i' }"
+                          v-model="start"></datepicker>
             </div>
           </div>
           <div class="control is-horizontal">
             <div class="control-label">
               <label class="label">失效时间</label>
             </div>
-            <div class="control is-grouped">
-              <p class="control">
-                <Flatpickr class="input" :options="options" v-model="end" @update="updateEnd"/>
-              </p>
+            <div class="control">
+              <datepicker :config="{ enableTime: true, time_24hr: true, dateFormat: 'Y-m-d H:i' }"
+                          v-model="end"></datepicker>
             </div>
           </div>
           <div class="control is-horizontal">
@@ -101,11 +95,11 @@
   import Vue from 'vue'
   import uuid from 'uuid'
   import moment from 'moment'
-  import Flatpickr from 'vue-flatpickr/vue-flatpickr-default.vue'
   import Notification from 'vue-bulma-notification'
   import {CardModal} from 'vue-bulma-modal'
   import {getAuthHeaders} from '../../router'
   import dataConfig from '../../api/data-config'
+  import Datepicker from 'vue-bulma-datepicker'
 
   const NotificationComponent = Vue.extend(Notification)
 
@@ -125,9 +119,9 @@
 
   export default {
     components: {
-      Flatpickr,
       Notification,
-      CardModal
+      CardModal,
+      Datepicker
     },
     beforeMount () {
       this.$store.dispatch('getBannerDetails', {authHeaders: getAuthHeaders(), bannerID: this.$route.params.id})
@@ -136,24 +130,11 @@
     },
     data () {
       return {
-        options: {
-          allowInput: true,
-          dateFormat: 'Y-m-d H:i:S',
-          enableTime: true
-        },
         deleteMessage: '确定要删除吗',
         isDeleteModalVisible: false
       }
     },
     methods: {
-      updateStart (value) {
-        var ts = moment(value, 'YYYY-MM-DD HH:mm:ss').unix()
-        console.log(ts)
-        this.$store.commit('updateBannerDetailsStart', ts)
-      },
-      updateEnd (value) {
-        this.$store.commit('updateBannerDetailsEnd', moment(value).unix())
-      },
       imageChanged () {
         var file = this.$refs.imageInput.files[0]
         var formData = new FormData()
@@ -232,11 +213,19 @@
       start: {
         get () {
           return moment.unix(this.$store.state.dataConfig.bannerDetails.start).toString()
+        },
+        set (value) {
+          var ts = moment(value, 'YYYY-MM-DD HH:mm:ss').unix()
+          this.$store.commit('updateBannerDetailsStart', ts)
         }
       },
       end: {
         get () {
-          return moment.unix(this.$store.state.dataConfig.bannerDetails.end).clone().toDate()
+          return moment.unix(this.$store.state.dataConfig.bannerDetails.end).toString()
+        },
+        set (value) {
+          var ts = moment(value, 'YYYY-MM-DD HH:mm:ss').unix()
+          this.$store.commit('updateBannerDetailsEnd', ts)
         }
       }
     }

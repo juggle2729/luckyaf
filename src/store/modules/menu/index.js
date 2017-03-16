@@ -1,9 +1,5 @@
 import * as types from '../../mutation-types'
 import {lazyLoading} from './lazyLoading'
-import charts from './charts'
-import uifeatures from './uifeatures'
-import components from './components'
-import tables from './tables'
 import dataConfig from './data-config'
 import product from './product'
 import award from './award'
@@ -52,11 +48,7 @@ const state = {
       },
       component: lazyLoading('Home', false)
     },
-    analysis,
-    charts,
-    uifeatures,
-    components,
-    tables
+    analysis
   ]
 }
 

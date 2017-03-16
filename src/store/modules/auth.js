@@ -22,7 +22,7 @@ const actions = {
         },
         (error) => {
           commit(types.AUTHENTICATE_FAILURE, error)
-          reject()
+          reject(new Error('Auth failed'))
         }
       )
     })
