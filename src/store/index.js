@@ -11,7 +11,7 @@ import dataConfig from './modules/data-config'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  strict: true,  // process.env.NODE_ENV !== 'development',
+  strict: process.env.NODE_ENV !== 'development',
   actions,
   getters,
   modules: {

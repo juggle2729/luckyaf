@@ -2,8 +2,8 @@
   "name": "lucky-admin",
   "version": "v0.1.0",
   "description": "一元购控制台",
-  "repository": "git@192.168.0.250:changli/mlucky.git",
-  "homepage": "http://121.40.29.144/",
+  "repository": "git@192.168.0.245:lichang/luckyaf.git",
+  "homepage": "http://54.169.136.207/",
   "license": "",
   "author": {
     "name": "Chang Li",

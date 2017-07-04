@@ -11,7 +11,7 @@ export default {
     {
       name: '审核模式开关',
       path: '/data_config/sensor_switch',
-      component: lazyLoading('ui/Buttons')
+      component: require('../../../views/data_config/sensor')
     },
     {
       name: 'Banner',

@@ -37,6 +37,14 @@ const state = {
     end: moment().unix(),
     error: null,
     requestStatus: null
+  },
+  sensor: {
+    app_store: null,
+    app_store_build_number: null,
+    google_play: null,
+    google_play_build_number: null,
+    error: null,
+    requestStatus: null
   }
 }
 
