@@ -1,18 +1,18 @@
 import Vue from 'vue'
 import Resource from 'vue-resource'
 import NProgress from 'vue-nprogress'
-import {sync} from 'vuex-router-sync'
+import { sync } from 'vuex-router-sync'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import * as filters from './filters'
-import {TOGGLE_SIDEBAR} from 'vuex-store/mutation-types'
+import { TOGGLE_SIDEBAR } from 'vuex-store/mutation-types'
 import VuePaginate from 'vue-paginate'
 
 Vue.use(VuePaginate)
 
 Vue.use(Resource)
-Vue.http.options.root = 'http://54.169.136.207/admin'
+Vue.http.options.root = 'http://54.169.136.207/luckyas'
 
 const options = {
   latencyThreshold: 200, // Number of ms before progressbar starts showing, default: 100,

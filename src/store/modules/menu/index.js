@@ -1,10 +1,10 @@
 import * as types from '../../mutation-types'
-import {lazyLoading} from './lazyLoading'
+import { lazyLoading } from './lazyLoading'
 import dataConfig from './data-config'
-import product from './product'
-import award from './award'
-import user from './user'
-import analysis from './analysis'
+// import product from './product'
+// import award from './award'
+// import user from './user'
+// import analysis from './analysis'
 
 // show: meta.label -> name
 // name: component name
@@ -20,35 +20,11 @@ const state = {
       },
       component: lazyLoading('Home', false)
     },
-    dataConfig,
-    product,
-    award,
-    user,
-    {
-      name: '系统通知',
-      path: '/notification',
-      meta: {
-        icon: 'fa-tachometer'
-      },
-      component: lazyLoading('Home', false)
-    },
-    {
-      name: '用户反馈',
-      path: '/feedback',
-      meta: {
-        icon: 'fa-tachometer'
-      },
-      component: lazyLoading('Home', false)
-    },
-    {
-      name: '红包模版',
-      path: '/coupon',
-      meta: {
-        icon: 'fa-tachometer'
-      },
-      component: lazyLoading('Home', false)
-    },
-    analysis
+    dataConfig
+    // product,
+    // award,
+    // user,
+    // analysis
   ]
 }
 

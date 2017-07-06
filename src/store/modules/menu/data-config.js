@@ -1,4 +1,4 @@
-import {lazyLoading} from './lazyLoading'
+import { lazyLoading } from './lazyLoading'
 
 export default {
   meta: {
@@ -11,28 +11,28 @@ export default {
     {
       name: '审核模式开关',
       path: '/data_config/sensor_switch',
-      component: require('../../../views/data_config/sensor')
+      component: lazyLoading('data_config/sensor')
     },
     {
       name: 'Banner',
       path: '/data_config/banners',
       component: lazyLoading('data_config/bannerList')
     },
-    {
-      name: 'Discovery',
-      path: '/data_config/discovery',
-      component: lazyLoading('ui/Typography')
-    },
-    {
-      name: 'Loading',
-      path: '/data_config/loading',
-      component: lazyLoading('ui/Icons')
-    },
-    {
-      name: 'Shortcut',
-      path: '/data_config/shortcut',
-      component: lazyLoading('ui/Typography')
-    },
+    // {
+    //   name: 'Discovery',
+    //   path: '/data_config/discovery',
+    //   component: lazyLoading('ui/Typography')
+    // },
+    // {
+    //   name: 'Loading',
+    //   path: '/data_config/loading',
+    //   component: lazyLoading('ui/Icons')
+    // },
+    // {
+    //   name: 'Shortcut',
+    //   path: '/data_config/shortcut',
+    //   component: lazyLoading('ui/Typography')
+    // },
     {
       name: '版本配置',
       path: '/data_config/version',

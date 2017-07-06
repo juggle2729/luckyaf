@@ -5,13 +5,12 @@ import store from '../store'
 Vue.use(Router)
 
 function isAuthenticated () {
-  if (store.state.auth && store.state.auth.loginStatus && store.state.auth.user_id && store.state.auth.token) {
+  if (store.state.auth && store.state.auth.loginStatus && store.state.auth.jwt_token) {
     localStorage.loginStatus = true
-    localStorage.user_id = store.state.auth.user_id
-    localStorage.token = store.state.auth.token
+    localStorage.jwt_token = store.state.auth.jwt_token
     return true
   }
-  if (localStorage.loginStatus && localStorage.user_id && localStorage.token) {
+  if (localStorage.loginStatus && localStorage.jwt_token) {
     store.dispatch('syncAuthStore')
     return true
   }
@@ -19,8 +18,7 @@ function isAuthenticated () {
 
 function getAuthHeaders () {
   return {
-    'X-AUTH-USER': store.state.auth.user_id.toString(),
-    'X-AUTH-TOKEN': store.state.auth.token
+    'Authorization': 'Bearer ' + store.state.auth.jwt_token
   }
 }
 
@@ -92,4 +90,4 @@ function generateRoutesFromMenu (menu = [], routes = []) {
   return routes
 }
 
-export {isAuthenticated, getAuthHeaders}
+export { isAuthenticated, getAuthHeaders }

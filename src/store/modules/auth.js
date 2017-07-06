@@ -3,8 +3,7 @@ import auth from '../../api/auth'
 
 // initial state
 const state = {
-  user_id: null,
-  token: null,
+  jwt_token: null,
   requestStatus: null,
   loginStatus: false,
   auth_error: null
@@ -38,12 +37,10 @@ const mutations = {
     state.requestStatus = 'started'
   },
   [types.AUTHENTICATE_SUCCESS] (state, data) {
-    state.user_id = data.id
-    state.token = data.token
+    state.jwt_token = data.jwt_token
     state.loginStatus = true
     state.requestStatus = 'stopped'
-    localStorage.user_id = data.id
-    localStorage.token = data.token
+    localStorage.jwt_token = data.jwt_token
     localStorage.loginStatus = true
   },
   [types.AUTHENTICATE_FAILURE] (state, error) {
@@ -53,8 +50,7 @@ const mutations = {
   },
   [types.SYNC_AUTH_STORE] (state) {
     state.loginStatus = localStorage.loginStatus
-    state.user_id = localStorage.user_id
-    state.token = localStorage.token
+    state.jwt_token = localStorage.jwt_token
   }
 }
 
