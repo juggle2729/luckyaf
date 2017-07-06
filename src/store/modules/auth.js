@@ -26,6 +26,21 @@ const actions = {
       )
     })
   },
+  register ({commit}, params) {
+    return new Promise((resolve, reject) => {
+      commit(types.AUTHENTICATE_REQUEST)
+      auth.loginAPI(params,
+        (data) => {
+          commit(types.AUTHENTICATE_SUCCESS, data)
+          resolve()
+        },
+        (error) => {
+          commit(types.AUTHENTICATE_FAILURE, error)
+          reject(new Error('Auth failed'))
+        }
+      )
+    })
+  },
   syncAuthStore ({commit}) {
     commit(types.SYNC_AUTH_STORE)
   }

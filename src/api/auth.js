@@ -8,5 +8,13 @@ export default {
       }, (error) => {
         errorCb(error)
       })
+  },
+  registerAPI (params, cb, errorCb) {
+    return Vue.http.post('register', params)
+      .then((response) => {
+        cb(response.data)
+      }, (error) => {
+        errorCb(error)
+      })
   }
 }
