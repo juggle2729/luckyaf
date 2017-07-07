@@ -8,19 +8,21 @@
         <h1 class="title">注册登录</h1>
         <div class="block">
           <p class="control has-icon">
-            <input class="input" type="text" placeholder="用户名" v-model="username">
+            <input class="input" type="text" placeholder="用户名" v-model="username"  @keyup="VerifyUsername">
             <span class="icon is-small">
                 <i class="fa fa-envelope"></i>
               </span>
           </p>
+          <p class="checkuser" v-if="usercue" ref="user"></p>
           <p class="control has-icon">
-            <input class="input" type="password" placeholder="密码" v-model="password">
+            <input class="input" type="password" placeholder="密码" v-model="password" @keyup="VerifyPsd">
             <span class="icon is-small">
             <i class="fa fa-lock"></i>
             </span>
           </p>
+          <p class="checkpsd" v-if="psdcue" ref="psd"></p>
           <p class="control">
-            <button class="button is-success" @click="login">
+            <button class="button is-success" @click="login" ref="log">
               Login
             </button>
             <button class="button is-success" @click="register">
@@ -35,19 +37,21 @@
 
 <script>
   import Chart from 'vue-bulma-chartjs'
-  import {getAuthHeaders} from '../router'
   export default {
     components: {
       Chart
+    },
+    data () {
+      return {
+        usercue: false,
+        psdcue: false
+      }
     },
     beforeMount () {
     },
     methods: {
       login: function () {
-        this.$store.dispatch('login', {
-          authHeaders: getAuthHeaders(),
-          payload: {username: this.username, password: this.password}
-        }).then(
+        this.$store.dispatch('login', {username: this.username, password: this.password}).then(
           () => {
             this.$router.replace(this.$route.query.redirect || '/')
           },
@@ -58,10 +62,41 @@
       },
       register: function () {
         this.$router.push({path: '/register'})
+      },
+      VerifyUsername: function () {
+        if (this.username.length < 6 && this.username.length > 0) {
+          this.usercue = true
+          this.$refs.user.innerHTML = '<span>用户名不能少于六位！</span>'
+          this.$refs.log.disabled = true
+        } else if (this.username.length === 0) {
+          this.usercue = true
+          this.$refs.user.innerHTML = '<span>用户名不能为空！</span>'
+          this.$refs.log.disabled = true
+        } else {
+          this.usercue = false
+        }
+        if (!this.usercue && !this.psdcue) {
+          this.$refs.log.disabled = false
+        }
+      },
+      VerifyPsd: function () {
+        if (this.password.length < 6 && this.password.length > 0) {
+          this.psdcue = true
+          this.$refs.psd.innerHTML = '<span>密码不能少于六位！</span>'
+          this.$refs.log.disabled = true
+        } else if (this.password.length === 0) {
+          this.psdcue = true
+          this.$refs.psd.innerHTML = '<span>密码不能为空！</span>'
+          this.$refs.log.disabled = true
+        } else {
+          this.psdcue = false
+        }
+        if (!this.usercue && !this.psdcue) {
+          this.$refs.log.disabled = false
+        }
       }
     },
-    data () {
-      return {}
+    mounted: {
     },
     computed: {
       authenticated () {
@@ -72,4 +107,8 @@
 </script>
 
 <style lang="scss" scoped>
+  .checkpsd,.checkuser{
+    text-align: left;
+    color: red
+  }
 </style>

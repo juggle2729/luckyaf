@@ -5,7 +5,7 @@ import store from '../store'
 Vue.use(Router)
 
 function isAuthenticated () {
-  if (store.state.auth.login && store.state.auth.login.loginStatus && store.state.auth.jwt_token) {
+  if (store.state.auth && store.state.auth.loginStatus && store.state.auth.jwt_token) {
     localStorage.loginStatus = true
     localStorage.jwt_token = store.state.auth.jwt_token
     return true
