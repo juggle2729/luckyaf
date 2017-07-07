@@ -5,7 +5,7 @@
     </p>
     <div class="tile is-parent">
       <article class="tile is-child box">
-        <h1 class="title">注册登录</h1>
+        <h1 class="title">注册</h1>
         <div class="block">
           <p class="control has-icon">
             <input class="input" type="text" placeholder="用户名" v-model="username">
@@ -20,9 +20,6 @@
             </span>
           </p>
           <p class="control">
-            <button class="button is-success" @click="login">
-              Login
-            </button>
             <button class="button is-success" @click="register">
               Register
             </button>
@@ -35,7 +32,6 @@
 
 <script>
   import Chart from 'vue-bulma-chartjs'
-  import {getAuthHeaders} from '../router'
   export default {
     components: {
       Chart
@@ -43,25 +39,20 @@
     beforeMount () {
     },
     methods: {
-      login: function () {
-        this.$store.dispatch('login', {
-          authHeaders: getAuthHeaders(),
-          payload: {username: this.username, password: this.password}
-        }).then(
+      register: function () {
+        this.$store.dispatch('register', {username: this.username, password: this.password}).then(
           () => {
-            this.$router.replace(this.$route.query.redirect || '/')
+            this.$router.push({path: '/login'})
           },
           () => {
-            console.log('login failed')
+            console.log('register failed')
           }
         )
-      },
-      register: function () {
-        this.$router.push({path: '/register'})
       }
     },
     data () {
-      return {}
+      return {
+      }
     },
     computed: {
       authenticated () {

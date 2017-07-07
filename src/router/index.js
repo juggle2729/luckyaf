@@ -5,7 +5,7 @@ import store from '../store'
 Vue.use(Router)
 
 function isAuthenticated () {
-  if (store.state.auth && store.state.auth.loginStatus && store.state.auth.jwt_token) {
+  if (store.state.auth.login && store.state.auth.login.loginStatus && store.state.auth.jwt_token) {
     localStorage.loginStatus = true
     localStorage.jwt_token = store.state.auth.jwt_token
     return true
@@ -48,6 +48,11 @@ export default new Router({
       name: 'Login',
       path: '/login',
       component: require('../views/Login')
+    },
+    {
+      name: 'Register',
+      path: '/register',
+      component: require('../views/Register')
     },
     {
       name: 'Banner Details',

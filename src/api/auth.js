@@ -1,7 +1,8 @@
 import Vue from 'vue'
 
 export default {
-  loginAPI (params, cb, errorCb) {
+  loginAPI (authHeaders, params, cb, errorCb) {
+    Vue.http.headers.common['Authorization'] = authHeaders['Authorization']
     return Vue.http.post('login_by_password', params)
       .then((response) => {
         cb(response.data)
