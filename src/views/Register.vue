@@ -13,14 +13,14 @@
                 <i class="fa fa-envelope"></i>
             </span>
           </p>
-          <p class="checkuser" v-if="usercue" ref="user"></p>
+          <p class="verify-username" v-if="ErrorPromptUsername" ref="user"></p>
           <p class="control has-icon">
             <input class="input" type="password" placeholder="密码" v-model="password " @keyup="VerifyPsd">
             <span class="icon is-small">
             <i class="fa fa-lock"></i>
             </span>
           </p>
-          <p class="checkpsd" v-if="psdcue" ref="psd"></p>
+          <p class="verify-password" v-if="ErrorPromptPassword" ref="psd"></p>
           <p class="control">
             <button class="button is-success" @click="register" ref="reg">
               Register
@@ -61,8 +61,10 @@
     },
     data () {
       return {
-        usercue: false,
-        psdcue: false
+        ErrorPromptUsername: false,
+        ErrorPromptPassword: false,
+        username: '',
+        password: ''
       }
     },
     beforeMount () {
@@ -75,41 +77,41 @@
             setTimeout(this.$router.replace(this.$route.query.redirect || 'login'), 1000)
           },
           () => {
-            this.openNotificationWithType('')
+            if (this.$store.state.auth.auth_error.status === 469) {
+              this.openNotificationWithType('')
+            }
           }
         )
       },
       VerifyUsername: function () {
         if (this.username.length < 6 && this.username.length > 0) {
-          this.usercue = true
+          this.ErrorPromptUsername = true
           this.$refs.user.innerHTML = '<span>用户名不能少于六位！</span>'
           this.$refs.reg.disabled = true
         } else if (this.username.length === 0) {
-          this.$nextTick(() => {
-            this.usercue = true
-            this.$refs.user.innerHTML = '<span>用户名不能为空！</span>'
-            this.$refs.reg.disabled = true
-          })
+          this.ErrorPromptUsername = true
+          this.$refs.user.innerHTML = '<span>用户名不能为空！</span>'
+          this.$refs.reg.disabled = true
         } else {
-          this.usercue = false
+          this.ErrorPromptUsername = false
         }
-        if (!this.usercue && !this.psdcue) {
+        if (!this.ErrorPromptUsername && !this.ErrorPromptPassword) {
           this.$refs.reg.disabled = false
         }
       },
       VerifyPsd: function () {
         if (this.password.length < 6 && this.password.length > 0) {
-          this.psdcue = true
+          this.ErrorPromptPassword = true
           this.$refs.psd.innerHTML = '<span>密码不能少于六位！</span>'
           this.$refs.reg.disabled = true
         } else if (this.password.length === 0) {
-          this.psdcue = true
+          this.ErrorPromptPassword = true
           this.$refs.psd.innerHTML = '<span>密码不能为空！</span>'
           this.$refs.reg.disabled = true
         } else {
-          this.psdcue = false
+          this.ErrorPromptPassword = false
         }
-        if (!this.usercue && !this.psdcue) {
+        if (!this.ErrorPromptUsername && !this.ErrorPromptPassword) {
           this.$refs.reg.disabled = false
         }
       },
@@ -128,18 +130,16 @@
         })
       }
     },
-    mounted () {
-    },
     computed: {
       authenticated () {
-        return this.$store.state.auth.loginStatus
+        return this.$store.state.auth.registerStatus
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .checkpsd,.checkuser{
+  .verify-password,.verify-username{
     text-align: left;
     color: red
   }

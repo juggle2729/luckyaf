@@ -13,14 +13,14 @@
                 <i class="fa fa-envelope"></i>
               </span>
           </p>
-          <p class="checkuser" v-if="usercue" ref="user"></p>
+          <p class="verify-username" v-if="ErrorPromptUsername" ref="user"></p>
           <p class="control has-icon">
             <input class="input" type="password" placeholder="密码" v-model="password" @keyup="VerifyPsd">
             <span class="icon is-small">
             <i class="fa fa-lock"></i>
             </span>
           </p>
-          <p class="checkpsd" v-if="psdcue" ref="psd"></p>
+          <p class="verify-password" v-if="ErrorPromptPassword" ref="psd"></p>
           <p class="control">
             <button class="button is-success" @click="login" ref="log">
               Login
@@ -39,7 +39,9 @@
   import Vue from 'vue'
   import Chart from 'vue-bulma-chartjs'
   import Message from 'vue-bulma-message'
+  import Notification from 'vue-bulma-notification'
   const MessageComponent = Vue.extend(Message)
+  const NotificationComponent = Vue.extend(Notification)
 
   const openMessage =
     (propsData = {title: '', message: '', type: '', direction: '', duration: 8000, container: '.messages'}) => {
@@ -48,15 +50,25 @@
         propsData
       })
     }
+  const openNotification =
+    (propsData = {title: '', message: '', type: '', direction: '', duration: 4500, container: '.notifications'}) => {
+      return new NotificationComponent({
+        el: document.createElement('div'),
+        propsData
+      })
+    }
   export default {
     components: {
       Chart,
-      Message
+      Message,
+      Notification
     },
     data () {
       return {
-        usercue: false,
-        psdcue: false
+        ErrorPromptUsername: false,
+        ErrorPromptPassword: false,
+        username: '',
+        password: ''
       }
     },
     beforeMount () {
@@ -68,7 +80,12 @@
             this.$router.replace(this.$route.query.redirect || '/')
           },
           () => {
-            this.openMessageWithType('')
+            if (this.$store.state.auth.auth_error.status === 468) {
+              this.openMessageWithType('')
+            }
+            if (this.$store.state.auth.auth_error.status === 500) {
+              this.openNotificationWithType('')
+            }
           }
         )
       },
@@ -77,33 +94,33 @@
       },
       VerifyUsername: function () {
         if (this.username.length < 6 && this.username.length > 0) {
-          this.usercue = true
+          this.ErrorPromptUsername = true
           this.$refs.user.innerHTML = '<span>用户名不能少于六位！</span>'
           this.$refs.log.disabled = true
         } else if (this.username.length === 0) {
-          this.usercue = true
+          this.ErrorPromptUsername = true
           this.$refs.user.innerHTML = '<span>用户名不能为空！</span>'
           this.$refs.log.disabled = true
         } else {
-          this.usercue = false
+          this.ErrorPromptUsername = false
         }
-        if (!this.usercue && !this.psdcue) {
+        if (!this.ErrorPromptUsername && !this.ErrorPromptPassword) {
           this.$refs.log.disabled = false
         }
       },
       VerifyPsd: function () {
         if (this.password.length < 6 && this.password.length > 0) {
-          this.psdcue = true
+          this.ErrorPromptPassword = true
           this.$refs.psd.innerHTML = '<span>密码不能少于六位！</span>'
           this.$refs.log.disabled = true
         } else if (this.password.length === 0) {
-          this.psdcue = true
+          this.ErrorPromptPassword = true
           this.$refs.psd.innerHTML = '<span>密码不能为空！</span>'
           this.$refs.log.disabled = true
         } else {
-          this.psdcue = false
+          this.ErrorPromptPassword = false
         }
-        if (!this.usercue && !this.psdcue) {
+        if (!this.ErrorPromptUsername && !this.ErrorPromptPassword) {
           this.$refs.log.disabled = false
         }
       },
@@ -113,9 +130,14 @@
           message: '请联系管理员开放权限',
           type: type
         })
+      },
+      openNotificationWithType (type) {
+        openNotification({
+          title: '登录失败',
+          message: '服务器出了问题',
+          type: type
+        })
       }
-    },
-    mounted: {
     },
     computed: {
       authenticated () {
@@ -126,7 +148,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .checkpsd,.checkuser{
+  .verify-password,.verify-username{
     text-align: left;
     color: red
   }
