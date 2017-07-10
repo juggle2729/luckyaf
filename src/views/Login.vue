@@ -36,10 +36,22 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import Chart from 'vue-bulma-chartjs'
+  import Message from 'vue-bulma-message'
+  const MessageComponent = Vue.extend(Message)
+
+  const openMessage =
+    (propsData = {title: '', message: '', type: '', direction: '', duration: 8000, container: '.messages'}) => {
+      return new MessageComponent({
+        el: document.createElement('div'),
+        propsData
+      })
+    }
   export default {
     components: {
-      Chart
+      Chart,
+      Message
     },
     data () {
       return {
@@ -56,7 +68,7 @@
             this.$router.replace(this.$route.query.redirect || '/')
           },
           () => {
-            console.log('login failed')
+            this.openMessageWithType('')
           }
         )
       },
@@ -94,6 +106,13 @@
         if (!this.usercue && !this.psdcue) {
           this.$refs.log.disabled = false
         }
+      },
+      openMessageWithType (type) {
+        openMessage({
+          title: '登录失败',
+          message: '请联系管理员开放权限',
+          type: type
+        })
       }
     },
     mounted: {

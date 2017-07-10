@@ -3,6 +3,7 @@ import auth from '../../api/auth'
 
 // initial state
 const state = {
+  status: null,
   jwt_token: null,
   requestStatus: null,
   loginStatus: false,
@@ -60,6 +61,7 @@ const mutations = {
     state.jwt_token = data.jwt_token
     state.loginStatus = true
     state.requestStatus = 'stopped'
+    state.status = data.status
     localStorage.jwt_token = data.jwt_token
     localStorage.loginStatus = true
   },

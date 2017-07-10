@@ -25,9 +25,6 @@
             <button class="button is-success" @click="register" ref="reg">
               Register
             </button>
-            <button class="button is-success"  @click="openMessageWithType('')" >
-              Register
-            </button>
           </p>
         </div>
       </article>
@@ -42,7 +39,7 @@
   const MessageComponent = Vue.extend(Message)
 
   const openMessage =
-    (propsData = {title: '', message: '', type: '', direction: '', duration: 3500, container: '.messages'}) => {
+    (propsData = {title: '', message: '', type: '', direction: '', duration: 5000, container: '.messages'}) => {
       return new MessageComponent({
         el: document.createElement('div'),
         propsData
@@ -65,7 +62,8 @@
       register: function () {
         this.$store.dispatch('register', {username: this.username, password: this.password}).then(
           () => {
-            this.$router.replace(this.$route.query.redirect || '/')
+            this.openMessageWithType('')
+            setTimeout(this.$router.replace(this.$route.query.redirect || 'login'), 1000)
           },
           () => {
             alert('该用户名已被注册')
@@ -78,9 +76,11 @@
           this.$refs.user.innerHTML = '<span>用户名不能少于六位！</span>'
           this.$refs.reg.disabled = true
         } else if (this.username.length === 0) {
-          this.usercue = true
-          this.$refs.user.innerHTML = '<span>用户名不能为空！</span>'
-          this.$refs.reg.disabled = true
+          this.$nextTick(() => {
+            this.usercue = true
+            this.$refs.user.innerHTML = '<span>用户名不能为空！</span>'
+            this.$refs.reg.disabled = true
+          })
         } else {
           this.usercue = false
         }
@@ -106,13 +106,13 @@
       },
       openMessageWithType (type) {
         openMessage({
-          title: '注册失败',
-          message: '该用户名已注册',
+          title: '',
+          message: '请联系管理员开放权限',
           type: type
         })
       }
     },
-    mounted: {
+    mounted () {
     },
     computed: {
       authenticated () {
