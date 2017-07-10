@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0cfcd90e-dc24-4a1a-9db8-3663353d6767" name="Default" comment="" />
+    <list default="true" id="0cfcd90e-dc24-4a1a-9db8-3663353d6767" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/Register.vue" afterPath="$PROJECT_DIR$/src/views/Register.vue" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -67,11 +69,11 @@
       <file leaf-file-name="Register.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/Register.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="71" column="8" lean-forward="true" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
+            <state relative-caret-position="188">
+              <caret line="54" column="4" lean-forward="false" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="4" />
               <folding>
                 <element signature="e#1146#1167#0" expanded="true" />
-                <element signature="e#2153#2754#0" expanded="false" />
+                <element signature="e#2559#3160#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -420,15 +422,15 @@
       <workItem from="1499392295099" duration="30424000" />
       <workItem from="1499441296730" duration="48000" />
       <workItem from="1499483000153" duration="17453000" />
-      <workItem from="1499651351730" duration="366000" />
+      <workItem from="1499651351730" duration="1135000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="141641000" />
+    <option name="totallyTimeSpent" value="142410000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1608" height="868" extended-state="0" />
+    <frame x="-4" y="-4" width="1608" height="868" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18492717" sideWeight="0.49532712" order="0" side_tool="false" content_ui="tabs" />
@@ -881,11 +883,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/Register.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="71" column="8" lean-forward="true" selection-start-line="71" selection-start-column="8" selection-end-line="71" selection-end-column="8" />
+        <state relative-caret-position="188">
+          <caret line="54" column="4" lean-forward="false" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="4" />
           <folding>
             <element signature="e#1146#1167#0" expanded="true" />
-            <element signature="e#2153#2754#0" expanded="false" />
+            <element signature="e#2559#3160#0" expanded="false" />
           </folding>
         </state>
       </provider>

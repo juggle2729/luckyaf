@@ -35,9 +35,10 @@
 <script>
   import Vue from 'vue'
   import Chart from 'vue-bulma-chartjs'
+  import Notification from 'vue-bulma-notification'
   import Message from 'vue-bulma-message'
+  const NotificationComponent = Vue.extend(Notification)
   const MessageComponent = Vue.extend(Message)
-
   const openMessage =
     (propsData = {title: '', message: '', type: '', direction: '', duration: 5000, container: '.messages'}) => {
       return new MessageComponent({
@@ -45,10 +46,18 @@
         propsData
       })
     }
+  const openNotification =
+    (propsData = {title: '', message: '', type: '', direction: '', duration: 4500, container: '.notifications'}) => {
+      return new NotificationComponent({
+        el: document.createElement('div'),
+        propsData
+      })
+    }
   export default {
     components: {
       Chart,
-      Message
+      Message,
+      Notification
     },
     data () {
       return {
@@ -66,7 +75,7 @@
             setTimeout(this.$router.replace(this.$route.query.redirect || 'login'), 1000)
           },
           () => {
-            alert('该用户名已被注册')
+            this.openNotificationWithType('')
           }
         )
       },
@@ -108,6 +117,13 @@
         openMessage({
           title: '',
           message: '请联系管理员开放权限',
+          type: type
+        })
+      },
+      openNotificationWithType (type) {
+        openNotification({
+          title: '注册失败',
+          message: '该用户名已被注册',
           type: type
         })
       }
